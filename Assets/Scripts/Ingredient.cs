@@ -6,6 +6,7 @@ public class Ingredient : MonoBehaviour
 {
     protected float cookingValue;
     protected List<CookingDevice> connectedCookingDevice = new List<CookingDevice>();
+    public List<CookingDevice> ConnectedCookingDevice { get { return connectedCookingDevice; } }
     public Transform cookingDeviceRoot { get; set; }
     public Transform ingredientSpawnerRoot { get; set; }
 

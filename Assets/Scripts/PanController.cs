@@ -84,7 +84,6 @@ public class PanController : CookingDevice
                 targetHeatingPower = heatingPower;
             }
 
-
             lastTransition = Time.time;
 
             targetHeatingPower += heatingPowerAddition;
