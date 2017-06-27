@@ -10,7 +10,6 @@ public class Gamba : Ingredient
     public float delayBeforeDeactivation = 2f;
     private float delayElapsed;
 
-    private List<Pan> connectedPan = new List<Pan>();
     private bool isAttractedToPan = true;
     private Rigidbody entityRigidbody;
     private MeshRenderer meshRenderer;
@@ -30,7 +29,7 @@ public class Gamba : Ingredient
         if (connectedCookingDevice.Count > 0)
         {
             cookingValue += ((connectedCookingDevice[0].heatingPower * Time.deltaTime * 0.01f) * randomCookingOffset);
-            Cooking();
+            UpdateVisualsAkaCooking();
         }
     }
 
@@ -45,7 +44,7 @@ public class Gamba : Ingredient
         }
 	}
 
-    private void Cooking()
+    private void UpdateVisualsAkaCooking()
     {
         meshRenderer.material.SetFloat("_CookedPercentage", cookingValue);
     }

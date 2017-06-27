@@ -22,9 +22,22 @@ public class Ingredient : MonoBehaviour
 
         if (cookingDevice)
         {
+            // Add ingredient to ingredient manager
             if (!connectedCookingDevice.Contains(cookingDevice))
             {
                 connectedCookingDevice.Add(cookingDevice);
+            }
+
+            // Trigger enter sound
+            if (cookingDevice.cookingSFX)
+            {
+                cookingDevice.PlaySFX(cookingDevice.cookingSFX);
+            }
+
+            // Trigger enter fx
+            if (cookingDevice.cookingVFX)
+            {
+                cookingDevice.PlayVFX(cookingDevice.cookingVFX);
             }
         }
     }
@@ -35,10 +48,15 @@ public class Ingredient : MonoBehaviour
 
         if (cookingDevice)
         {
+            // Remove ingredient from ingredient manager
             if (connectedCookingDevice.Contains(cookingDevice))
             {
                 connectedCookingDevice.Remove(cookingDevice);
             }
+
+            // Trigger enter sound
+
+            // Trigger enter fx
         }
     }
 
