@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class Gamba : Ingredient
 {
-    public Transform target;
     public float velocityMagnitude;
     public float maximumVelocity;
 
@@ -12,7 +11,7 @@ public class Gamba : Ingredient
     private float delayElapsed;
 
     private List<Pan> connectedPan = new List<Pan>();
-    private bool isAttractedToPan;
+    private bool isAttractedToPan = true;
     private Rigidbody entityRigidbody;
     private MeshRenderer meshRenderer;
 
@@ -28,9 +27,9 @@ public class Gamba : Ingredient
 
     protected void Update()
     {
-        if (connectedPan.Count > 0)
+        if (connectedCookingDevice.Count > 0)
         {
-            cookingValue += ((connectedPan[0].heatingPower * Time.deltaTime * 0.01f) * randomCookingOffset);
+            cookingValue += ((connectedCookingDevice[0].heatingPower * Time.deltaTime * 0.01f) * randomCookingOffset);
             Cooking();
         }
     }
@@ -39,38 +38,12 @@ public class Gamba : Ingredient
     {
         if (isAttractedToPan)
         {
-            Vector3 direction = target.position - transform.position;
+            Vector3 direction = cookingDeviceRoot.position - transform.position;
             entityRigidbody.AddForce(direction * velocityMagnitude);
 
             entityRigidbody.velocity = Vector3.ClampMagnitude(entityRigidbody.velocity, maximumVelocity);
         }
 	}
-
-    protected void OnTriggerEnter(Collider other)
-    {
-        Pan pan = other.GetComponent<Pan>();
-
-        if (pan)
-        {
-            if (!connectedPan.Contains(pan))
-            {
-                connectedPan.Add(pan);
-            }
-        }
-    }
-
-    protected void OnTriggerExit(Collider other)
-    {
-        Pan pan = other.GetComponent<Pan>();
-
-        if (pan)
-        {
-            if (connectedPan.Contains(pan))
-            {
-                connectedPan.Remove(pan);
-            }
-        }
-    }
 
     private void Cooking()
     {
@@ -79,7 +52,7 @@ public class Gamba : Ingredient
     
     protected void OnDrawGizmosSelected()
     {
-        Vector3 direction = target.position - transform.position;
+        Vector3 direction = cookingDeviceRoot.position - transform.position;
 
         Ray ray = new Ray(transform.position, direction);
         Gizmos.DrawRay(ray);

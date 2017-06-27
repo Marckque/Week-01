@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,11 +7,16 @@ public class PanController : CookingDevice
 {
     public bool isBeingUsed;
     public Transform pansRoot;
+
+    public Text temperature;
+
     private Pan[] pans;
 
-    private Coroutine panHeating;
+    private float lastMouseWheelDirection = 1f;
 
     private float lastTransition;
+
+    private bool lol;
 
     #region Variables
     [Header("Position")]
@@ -48,6 +54,13 @@ public class PanController : CookingDevice
     {
         isBeingUsed = Input.GetMouseButton(0);
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            lol = true;
+            IngredientManager.Instance.SwitchParents();
+            IngredientManager.Instance.SetKinematic(true);
+        }
+
         if (isBeingUsed)
         {
             // Mouse calculations
@@ -58,24 +71,45 @@ public class PanController : CookingDevice
             PanRotation();
         }
 
+        // Heat power
         float heatingPowerAddition = Input.GetAxisRaw("Mouse ScrollWheel");
 
         if (heatingPowerAddition != 0f)
         {
             StopAllCoroutines();
 
+            if (Mathf.Sign(heatingPowerAddition) != Mathf.Sign(lastMouseWheelDirection))
+            {
+                lastMouseWheelDirection = Mathf.Sign(heatingPowerAddition);
+                targetHeatingPower = heatingPower;
+            }
+
+
             lastTransition = Time.time;
 
             targetHeatingPower += heatingPowerAddition;
-            targetHeatingPower = Mathf.Clamp(targetHeatingPower, 0f, 5f);
+            targetHeatingPower = Mathf.Clamp(targetHeatingPower, heatingPower - 0.5f, heatingPower + 0.5f);
 
             StartCoroutine(UpdateHeat());
         }   
         
+        // Stop the power
         if (Input.GetKeyDown(KeyCode.Space))
         {
             heatingPower = 0f;
-        }     
+        }
+
+        // Update UI
+        int newTemperature = Mathf.RoundToInt(ExtensionMethods.Remap(heatingPower, 0f, 5f, 0f, 220f));
+        temperature.text = newTemperature.ToString() + "°C";
+
+        // if (lol == true)
+        if (lol)
+        {
+            lol = false;
+            IngredientManager.Instance.SwitchParents();
+            IngredientManager.Instance.SetKinematic(false);
+        }
     }
 
     private IEnumerator UpdateHeat()
@@ -86,7 +120,7 @@ public class PanController : CookingDevice
 
         while (percentageComplete < 1f)
         {
-            percentageComplete = (Time.time - lastTransition) / (2f + (Mathf.Abs(startHeatingPower - endHeatingPower) * 0.5f));
+            percentageComplete = (Time.time - lastTransition) / Mathf.Abs(startHeatingPower - endHeatingPower);
 
             heatingPower = Mathf.Lerp(startHeatingPower, endHeatingPower, percentageComplete);
             heatingPower = Mathf.Clamp(heatingPower, 0f, 5f);
