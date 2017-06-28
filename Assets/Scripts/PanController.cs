@@ -35,7 +35,8 @@ public class PanController : CookingDevice
     [Header("Rotation")]
     public float rotationX;
     public bool invertRotationX;
-    public float rotationY;
+    public float maxRotationY;
+    public float minRotationY;
     public bool invertRotationY;
     public float rotationZ;
     public bool invertRotationZ;
@@ -218,7 +219,7 @@ public class PanController : CookingDevice
     private void PanRotation()
     {
         float xRemap = ExtensionMethods.Remap(mouseX, 0f, 1f, -rotationX, rotationX);
-        float yRemap = ExtensionMethods.Remap(mouseY, 0f, 1f, -rotationY, rotationY);
+        float yRemap = ExtensionMethods.Remap(mouseY, 0f, 1f, minRotationY, maxRotationY);
         float zRemap = ExtensionMethods.Remap(mouseX, 0f, 1f, -rotationZ, rotationZ);
 
         targetEulerAngle.x = invertRotationX == true ? yRemap : -yRemap;
