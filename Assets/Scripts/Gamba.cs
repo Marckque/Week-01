@@ -15,11 +15,13 @@ public class Gamba : Ingredient
     private bool isAttractedToPan = true;
     private MeshRenderer meshRenderer;
 
-    private float timeWithoutConnectedDevice;
+
     private float randomCookingOffset;
 
-	protected void Start()
+	protected override void Start()
     {
+        base.Start();
+
         delayElapsed = delayBeforeDeactivation;
         entityRigidbody = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();

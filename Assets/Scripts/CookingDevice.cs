@@ -14,19 +14,4 @@ public class CookingDevice : MonoBehaviour
     public AudioClip cookingSFX;
 
     protected bool isBeingUsed;
-
-    public void PlayVFX(ParticleSystem value)
-    {
-        cookingVFX.Play();
-    }
-
-    public void PlaySFX(AudioClip value)
-    {
-        cookingAudioSource.clip = value;
-
-        if (!cookingAudioSource.isPlaying)
-        {
-            cookingAudioSource.Play();
-        }
-    }
 }

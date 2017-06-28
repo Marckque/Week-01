@@ -71,7 +71,7 @@ public class PanController : CookingDevice
             AddIngredientSecurity();
         }
         
-        /*
+        /* Other debug mesure
         if (Time.time > lastRecordedTime + securityFrames)
         {
             lastRecordedTime = Time.time;

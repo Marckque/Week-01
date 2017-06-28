@@ -19,8 +19,11 @@ public class Ingredient : MonoBehaviour
     public Transform ingredientSpawnerRoot { get; set; }
     private Vector3 endPosition;
     protected Rigidbody entityRigidbody;
+    protected float timeWithoutConnectedDevice;
 
-    private void Start()
+    private bool playOnce = true;
+
+    protected virtual void Start()
     {
         audioSource = GetComponent<AudioSource>();
         entityRigidbody = GetComponent<Rigidbody>();
@@ -80,8 +83,9 @@ public class Ingredient : MonoBehaviour
                     audioSource.clip = cookingDevice.cookingSFX;
                 }
 
-                if (!audioSource.isPlaying)
+                if ((!audioSource.isPlaying && timeWithoutConnectedDevice > .8f) || playOnce)
                 {
+                    playOnce = false;
                     audioSource.Play();
                 }
             }
