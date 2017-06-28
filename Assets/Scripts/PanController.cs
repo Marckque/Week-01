@@ -70,8 +70,8 @@ public class PanController : CookingDevice
         {
             AddIngredientSecurity();
         }
-
-
+        
+        /*
         if (Time.time > lastRecordedTime + securityFrames)
         {
             lastRecordedTime = Time.time;
@@ -82,6 +82,7 @@ public class PanController : CookingDevice
         {
             AddIngredientSecurity();
         }
+        */
 
         // Use pan
         if (isBeingUsed)

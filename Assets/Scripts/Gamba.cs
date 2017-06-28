@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 public class Gamba : Ingredient
 {
+    [Header("Gamba")]
+    [Header("Velocity")]
     public float velocityMagnitude;
     public float maximumVelocity;
 
-    public float delayBeforeDeactivation = 2f;
+    public float delayBeforeDeactivation = 1f;
     private float delayElapsed;
 
     private bool isAttractedToPan = true;
@@ -62,16 +64,5 @@ public class Gamba : Ingredient
     private void UpdateVisualsAkaCooking()
     {
         meshRenderer.material.SetFloat("_CookedPercentage", cookingValue);
-    }
-    
-    protected void OnDrawGizmosSelected()
-    {
-        Vector3 direction = cookingDeviceRoot.position - transform.position;
-
-        Ray ray = new Ray(transform.position, direction);
-        Gizmos.DrawRay(ray);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(ray.direction, .2f);
     }
 }

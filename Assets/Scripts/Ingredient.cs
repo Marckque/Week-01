@@ -2,9 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Ingredient : MonoBehaviour
 {
+    [Header("Ingredient")]
+    [Header("Feedback")]
     public ParticleSystem destroyedVFX;
+    public ParticleSystem cookingVFX;
+    public AudioSource audioSource;
+    public AudioClip cookingSFX;
+
     protected float cookingValue;
     protected List<CookingDevice> connectedCookingDevice = new List<CookingDevice>();
     public List<CookingDevice> ConnectedCookingDevice { get { return connectedCookingDevice; } }
@@ -15,6 +22,7 @@ public class Ingredient : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         entityRigidbody = GetComponent<Rigidbody>();
         endPosition = new Vector3(0f, 3f, -15f);
     }
@@ -67,20 +75,33 @@ public class Ingredient : MonoBehaviour
             // Trigger enter sound
             if (cookingDevice.cookingSFX)
             {
-                cookingDevice.PlaySFX(cookingDevice.cookingSFX);
+                if (audioSource.clip != cookingDevice.cookingSFX)
+                {
+                    audioSource.clip = cookingDevice.cookingSFX;
+                }
+
+                if (!audioSource.isPlaying)
+                {
+                    audioSource.Play();
+                }
             }
 
             // Trigger enter fx
             if (cookingDevice.cookingVFX)
             {
-                cookingDevice.PlayVFX(cookingDevice.cookingVFX);
+                if (cookingVFX != cookingDevice.cookingVFX)
+                {
+                    cookingVFX = cookingDevice.cookingVFX;
+                }
+                
+                cookingVFX.Play();
             }
         }
     }
 
     protected void OnTriggerExit(Collider other)
     {
-        Pan cookingDevice = other.GetComponent<Pan>();
+        CookingDevice cookingDevice = other.GetComponent<CookingDevice>();
 
         if (cookingDevice)
         {
@@ -89,10 +110,6 @@ public class Ingredient : MonoBehaviour
             {
                 connectedCookingDevice.Remove(cookingDevice);
             }
-
-            // Trigger enter sound
-
-            // Trigger enter fx
         }
     }
 
