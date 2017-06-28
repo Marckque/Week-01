@@ -207,7 +207,7 @@ public class PanController : CookingDevice
 
         targetPosition.x = invertMovementX == true ? xRemap : -xRemap;
         targetPosition.y = invertMovementY == true ? yRemap : -yRemap;
-        targetPosition.z = invertMovementZ == true ? yRemap : -yRemap;
+        targetPosition.z = invertMovementZ == true ? zRemap : -zRemap;
 
         transform.position = targetPosition;
     }
