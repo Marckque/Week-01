@@ -52,10 +52,7 @@ public class IngredientManager : MonoBehaviour
     {
         foreach (Ingredient ingredient in ingredients)
         {
-            if (ingredient.ConnectedCookingDevice.Count > 0)
-            {
-                ingredient.GetComponent<Rigidbody>().isKinematic = value;
-            }
+            ingredient.SetIsKinematic(value);
         }
     }
 
@@ -64,6 +61,14 @@ public class IngredientManager : MonoBehaviour
         foreach (Ingredient ingredient in ingredients)
         {
             ingredient.ChangeToNewParent();
+        }
+    }
+
+    public void Eat()
+    {
+        if (ingredients.Count > 0)
+        {
+            ingredients[0].EatIngredient();
         }
     }
 }

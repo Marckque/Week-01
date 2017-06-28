@@ -13,6 +13,8 @@ public class CookingDevice : MonoBehaviour
     public AudioSource cookingAudioSource;
     public AudioClip cookingSFX;
 
+    protected bool isBeingUsed;
+
     public void PlayVFX(ParticleSystem value)
     {
         cookingVFX.Play();

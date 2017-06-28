@@ -5,18 +5,19 @@ using System.Collections.Generic;
 
 public class PanController : CookingDevice
 {
-    public bool isBeingUsed;
+    // Pan
     public Transform pansRoot;
-
-    public Text temperature;
-
     private Pan[] pans;
 
+    // UI
+    public Text temperature;
+
+    // Heating power change
+    private float lastTransition;
     private float lastMouseWheelDirection = 1f;
 
-    private float lastTransition;
-
-    private bool lol;
+    // Security
+    private bool preventIngredientsToBug;
 
     #region Variables
     [Header("Position")]
@@ -54,9 +55,10 @@ public class PanController : CookingDevice
     {
         isBeingUsed = Input.GetMouseButton(0);
 
+        // Prevent the ingredients to bug
         if (Input.GetMouseButtonDown(0))
         {
-            lol = true;
+            preventIngredientsToBug = true;
             IngredientManager.Instance.SwitchParents();
             IngredientManager.Instance.SetKinematic(true);
         }
@@ -98,14 +100,20 @@ public class PanController : CookingDevice
             heatingPower = 0f;
         }
 
+        if (Input.GetKeyDown(KeyCode.E) && Mathf.Approximately(heatingPower, 0f))
+        {
+            Debug.Log("E");
+            IngredientManager.Instance.Eat();
+        }
+
         // Update UI
         int newTemperature = Mathf.RoundToInt(ExtensionMethods.Remap(heatingPower, 0f, 5f, 0f, 220f));
         temperature.text = newTemperature.ToString() + "°C";
 
-        // if (lol == true)
-        if (lol)
+        // Prevents unexpected rigidbodies' behaviours
+        if (preventIngredientsToBug)
         {
-            lol = false;
+            preventIngredientsToBug = false;
             IngredientManager.Instance.SwitchParents();
             IngredientManager.Instance.SetKinematic(false);
         }

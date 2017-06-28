@@ -11,7 +11,6 @@ public class Gamba : Ingredient
     private float delayElapsed;
 
     private bool isAttractedToPan = true;
-    private Rigidbody entityRigidbody;
     private MeshRenderer meshRenderer;
 
     private float randomCookingOffset;
