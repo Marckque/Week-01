@@ -19,10 +19,16 @@ public class Ingredient : MonoBehaviour
         endPosition = new Vector3(0f, 3f, -15f);
     }
 
-    public void ChangeToNewParent()
+    public void ChangeToNewParent(bool value)
     {
-        transform.SetParent
-            (transform.parent == cookingDeviceRoot ? ingredientSpawnerRoot : cookingDeviceRoot);
+        if (value)
+        {
+            transform.SetParent(cookingDeviceRoot);
+        }
+        else
+        {
+            transform.SetParent(ingredientSpawnerRoot);
+        }
     }
     
     public void SetIsKinematic(bool value)

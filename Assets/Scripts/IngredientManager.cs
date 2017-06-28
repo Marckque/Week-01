@@ -56,11 +56,11 @@ public class IngredientManager : MonoBehaviour
         }
     }
 
-    public void SwitchParents()
+    public void SwitchParents(bool value)
     {
         foreach (Ingredient ingredient in ingredients)
         {
-            ingredient.ChangeToNewParent();
+            ingredient.ChangeToNewParent(value);
         }
     }
 

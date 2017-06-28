@@ -18,6 +18,10 @@ public class PanController : CookingDevice
 
     // Security
     private bool preventIngredientsToBug;
+    private Vector3 formerMousePosition;
+    private float securityFrames = 0.15f;
+    private float lastRecordedTime;
+    private float mouseDistance = 500f;
 
     #region Variables
     [Header("Position")]
@@ -58,11 +62,22 @@ public class PanController : CookingDevice
         // Prevent the ingredients to bug
         if (Input.GetMouseButtonDown(0))
         {
-            preventIngredientsToBug = true;
-            IngredientManager.Instance.SwitchParents();
-            IngredientManager.Instance.SetKinematic(true);
+            AddIngredientSecurity();
         }
 
+        if (Time.time > lastRecordedTime + securityFrames)
+        {
+            lastRecordedTime = Time.time;
+            formerMousePosition = mousePositionToScreenCoordinate;
+        }
+
+        Debug.Log("Dist = " + Vector3.Distance(Input.mousePosition, formerMousePosition));
+        //if (Vector3.Distance(mousePositionToScreenCoordinate, formerMousePosition) > mouseDistance)
+        //{
+        //    AddIngredientSecurity();
+        //}
+
+        // Use pan
         if (isBeingUsed)
         {
             // Mouse calculations
@@ -111,12 +126,24 @@ public class PanController : CookingDevice
         temperature.text = newTemperature.ToString() + "°C";
 
         // Prevents unexpected rigidbodies' behaviours
-        if (preventIngredientsToBug)
+        //if (preventIngredientsToBug)
         {
-            preventIngredientsToBug = false;
-            IngredientManager.Instance.SwitchParents();
-            IngredientManager.Instance.SetKinematic(false);
+            RemoveIngredientSecurity();
         }
+    }
+
+    private void AddIngredientSecurity()
+    {
+        preventIngredientsToBug = true;
+        IngredientManager.Instance.SwitchParents(true);
+        IngredientManager.Instance.SetKinematic(true);
+    }
+
+    private void RemoveIngredientSecurity()
+    {
+        preventIngredientsToBug = false;
+        IngredientManager.Instance.SwitchParents(false);
+        IngredientManager.Instance.SetKinematic(false);
     }
 
     private IEnumerator UpdateHeat()

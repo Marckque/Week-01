@@ -13,6 +13,7 @@ public class Gamba : Ingredient
     private bool isAttractedToPan = true;
     private MeshRenderer meshRenderer;
 
+    private float timeWithoutConnectedDevice;
     private float randomCookingOffset;
 
 	protected void Start()
@@ -29,6 +30,21 @@ public class Gamba : Ingredient
         {
             cookingValue += ((connectedCookingDevice[0].heatingPower * Time.deltaTime * 0.01f) * randomCookingOffset);
             UpdateVisualsAkaCooking();
+        }
+
+        if (ConnectedCookingDevice.Count <= 0)
+        {
+            timeWithoutConnectedDevice += Time.deltaTime;
+
+            if (timeWithoutConnectedDevice > 1f)
+            {
+                isAttractedToPan = false;
+            }
+        }
+        else
+        {
+            timeWithoutConnectedDevice = 0f;
+            isAttractedToPan = true;
         }
     }
 
