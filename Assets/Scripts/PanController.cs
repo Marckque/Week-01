@@ -65,13 +65,12 @@ public class PanController : CookingDevice
             AddIngredientSecurity();
         }
 
-        if (Time.time > lastRecordedTime + securityFrames)
-        {
-            lastRecordedTime = Time.time;
-            formerMousePosition = mousePositionToScreenCoordinate;
-        }
+        //if (Time.time > lastRecordedTime + securityFrames)
+        //{
+        //    lastRecordedTime = Time.time;
+        //    formerMousePosition = mousePositionToScreenCoordinate;
+        //}
 
-        Debug.Log("Dist = " + Vector3.Distance(Input.mousePosition, formerMousePosition));
         //if (Vector3.Distance(mousePositionToScreenCoordinate, formerMousePosition) > mouseDistance)
         //{
         //    AddIngredientSecurity();

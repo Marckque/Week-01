@@ -23,6 +23,10 @@ public class CookingDevice : MonoBehaviour
     public void PlaySFX(AudioClip value)
     {
         cookingAudioSource.clip = value;
-        cookingAudioSource.Play();
+
+        if (!cookingAudioSource.isPlaying)
+        {
+            cookingAudioSource.Play();
+        }
     }
 }
