@@ -45,7 +45,8 @@ public class PanController : CookingDevice
     private Vector3 currentMousePosition;
 
     private Vector3 targetEulerAngle;
-    private Vector3 targetPosition;
+    private Vector3 originalPosition;
+    private Vector3 offsetPosition;
     private Vector3 mousePositionToScreenCoordinate;
     #endregion Variables
 
@@ -53,6 +54,7 @@ public class PanController : CookingDevice
     {
         SetAllPansParts();
         targetHeatingPower = heatingPower;
+        originalPosition = transform.position;
     }
 
     protected void Update()
@@ -205,11 +207,11 @@ public class PanController : CookingDevice
         float yRemap = ExtensionMethods.Remap(mouseY, 0f, 1f, -movementY, movementY);
         float zRemap = ExtensionMethods.Remap(mouseX, 0f, 1f, -movementZ, movementZ);
 
-        targetPosition.x = invertMovementX == true ? xRemap : -xRemap;
-        targetPosition.y = invertMovementY == true ? yRemap : -yRemap;
-        targetPosition.z = invertMovementZ == true ? zRemap : -zRemap;
+        offsetPosition.x = invertMovementX == true ? xRemap : -xRemap;
+        offsetPosition.y = invertMovementY == true ? yRemap : -yRemap;
+        offsetPosition.z = invertMovementZ == true ? zRemap : -zRemap;
 
-        transform.position = targetPosition;
+        transform.position = originalPosition + offsetPosition;
     }
 
     // Change pan rotation according to mouse position
