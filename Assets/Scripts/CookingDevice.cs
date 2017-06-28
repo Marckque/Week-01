@@ -11,7 +11,7 @@ public class CookingDevice : MonoBehaviour
     [Header("Feedback")]
     public ParticleSystem cookingVFX;
     public AudioSource cookingAudioSource;
-    public AudioClip cookingSFX;
+    //public AudioClip sourceStartCookingSFX;
 
     protected bool isBeingUsed;
 }

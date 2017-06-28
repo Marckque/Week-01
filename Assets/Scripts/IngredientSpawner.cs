@@ -21,8 +21,7 @@ public class IngredientSpawner : MonoBehaviour
             Ingredient ingredient = Instantiate(ingredientToSpawn, new Vector3(0f, 7.5f, 0f), Quaternion.identity);
 
             ingredient.transform.position += randomPosition;
-            ingredient.transform.eulerAngles = randomRotation;
-            ingredient.cookingDeviceRoot = cookingDeviceRoot.transform;
+            ingredient.transform.eulerAngles = randomRotation;            
             ingredient.transform.SetParent(transform);
 
             ingredient.cookingDeviceRoot = cookingDeviceRoot;

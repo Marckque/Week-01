@@ -6,11 +6,13 @@ using System.Collections.Generic;
 public class Ingredient : MonoBehaviour
 {
     [Header("Ingredient")]
-    [Header("Feedback")]
+    [Header("VFX")]
     public ParticleSystem destroyedVFX;
     public ParticleSystem cookingVFX;
-    public AudioSource audioSource;
-    public AudioClip cookingSFX;
+
+    [Header("Audio")]
+    public AudioSource sourceStartCookingSFX;
+    public AudioSource sourceCookingSFX;
 
     protected float cookingValue;
     protected List<CookingDevice> connectedCookingDevice = new List<CookingDevice>();
@@ -25,9 +27,19 @@ public class Ingredient : MonoBehaviour
 
     protected virtual void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         entityRigidbody = GetComponent<Rigidbody>();
         endPosition = new Vector3(0f, 3f, -15f);
+    }
+
+    protected virtual void Update()
+    {
+        if (ConnectedCookingDevice.Count > 0)
+        {
+            if (!sourceCookingSFX.isPlaying)
+            {
+                sourceCookingSFX.Play();
+            }
+        }
     }
 
     public void ChangeToNewParent(bool value)
@@ -75,18 +87,24 @@ public class Ingredient : MonoBehaviour
                 connectedCookingDevice.Add(cookingDevice);
             }
 
-            // Trigger enter sound
-            if (cookingDevice.cookingSFX)
-            {
-                if (audioSource.clip != cookingDevice.cookingSFX)
-                {
-                    audioSource.clip = cookingDevice.cookingSFX;
-                }
+            // !!!!!!!!!!!! A REPARER !!!!!!!!!!
+            // !!!!!!!!!!!! A REPARER !!!!!!!!!!
+            // !!!!!!!!!!!! A REPARER !!!!!!!!!!
+            // !!!!!!!!!!!! A REPARER !!!!!!!!!!
+            // !!!!!!!!!!!! A REPARER !!!!!!!!!!
 
-                if ((!audioSource.isPlaying && timeWithoutConnectedDevice > .8f) || playOnce)
+            // Trigger enter sound 
+            //if (cookingDevice.sourceStartCookingSFX)
+            {
+                //if (sourceStartCookingSFX.clip != cookingDevice.sourceStartCookingSFX)
+                //{
+                //    sourceStartCookingSFX.clip = cookingDevice.sourceStartCookingSFX;
+                //}
+
+                if ((!sourceStartCookingSFX.isPlaying && timeWithoutConnectedDevice > .8f) || playOnce)
                 {
                     playOnce = false;
-                    audioSource.Play();
+                    sourceStartCookingSFX.Play();
                 }
             }
 
@@ -98,7 +116,21 @@ public class Ingredient : MonoBehaviour
                     cookingVFX = cookingDevice.cookingVFX;
                 }
                 
-                cookingVFX.Play();
+                if (!cookingVFX.isPlaying)
+                {
+                    /*
+                    ParticleSystem ps = Instantiate(cookingVFX, transform.position, Quaternion.identity);
+
+                    ps.transform.localEulerAngles = Vector3.zero;
+                    ps.transform.position = Vector3.zero;
+                    */
+
+                    //float y = other.ClosestPoint(transform.position).y + 0.05f;
+
+                    //cookingVFX.transform.position = new Vector3(transform.position.x, y, transform.position.z);
+                    cookingVFX.Play();
+                    cookingVFX.Emit(0);
+                }
             }
         }
     }
@@ -113,6 +145,12 @@ public class Ingredient : MonoBehaviour
             if (connectedCookingDevice.Contains(cookingDevice))
             {
                 connectedCookingDevice.Remove(cookingDevice);
+            }
+
+            if (cookingVFX.isPlaying)
+            {
+                cookingVFX.Stop();
+                cookingVFX.Pause();
             }
         }
     }
