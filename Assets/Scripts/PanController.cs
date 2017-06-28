@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 public class PanController : CookingDevice
 {
+    // Fake mouse
+    public MouseFollower mouseFollower;
+
     // Pan
     public Transform pansRoot;
     private Pan[] pans;
@@ -68,16 +71,17 @@ public class PanController : CookingDevice
             AddIngredientSecurity();
         }
 
-        //if (Time.time > lastRecordedTime + securityFrames)
-        //{
-        //    lastRecordedTime = Time.time;
-        //    formerMousePosition = mousePositionToScreenCoordinate;
-        //}
 
-        //if (Vector3.Distance(mousePositionToScreenCoordinate, formerMousePosition) > mouseDistance)
-        //{
-        //    AddIngredientSecurity();
-        //}
+        if (Time.time > lastRecordedTime + securityFrames)
+        {
+            lastRecordedTime = Time.time;
+            formerMousePosition = Input.mousePosition;
+        }
+
+        if (Vector3.Distance(currentMousePosition, formerMousePosition) > mouseDistance)
+        {
+            AddIngredientSecurity();
+        }
 
         // Use pan
         if (isBeingUsed)
@@ -166,35 +170,10 @@ public class PanController : CookingDevice
         }
     }
 
-    /*
-    private void TakePan()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (hit.collider)
-            {
-                Pan pan = hit.collider.GetComponent<Pan>();
-                
-                if (pan)
-                {
-                    isBeingUsed = Input.GetMouseButton(0);
-                }
-            }
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            isBeingUsed = false;
-        }
-    }
-    */
-
     private void MousePositionUpdate()
     {
-        currentMousePosition = Input.mousePosition;
+        //currentMousePosition = Input.mousePosition;
+        currentMousePosition = mouseFollower.transform.position;
         mousePositionToScreenCoordinate = Camera.main.ScreenToViewportPoint(currentMousePosition);
 
         mouseX = Mathf.Clamp01(mousePositionToScreenCoordinate.x);
