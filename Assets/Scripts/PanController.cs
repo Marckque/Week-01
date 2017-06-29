@@ -22,6 +22,7 @@ public class PanController : CookingDevice
     private float lastMouseWheelDirection = 1f;
 
     // Security
+    private float timePressed;
     private bool preventIngredientsToBug;
     private Vector3 formerMousePosition;
     private float securityFrames = 0.15f;
@@ -69,6 +70,21 @@ public class PanController : CookingDevice
 
         // Prevent the ingredients to bug
         if (Input.GetMouseButtonDown(0))
+        {
+            timePressed = Time.time;
+            securityFrames += Time.deltaTime;
+            AddIngredientSecurity();
+        }
+
+        // Other debug mesure
+        if (Time.time > lastRecordedTime + securityFrames)
+        {
+            securityFrames = 2f * Time.deltaTime;
+            lastRecordedTime = Time.time;
+            formerMousePosition = Input.mousePosition;
+        }
+
+        if (Vector3.Distance(Input.mousePosition, formerMousePosition) > mouseDistance)
         {
             AddIngredientSecurity();
         }
@@ -216,3 +232,4 @@ public class PanController : CookingDevice
         }
     }
 }
+ 

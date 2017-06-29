@@ -4,17 +4,9 @@ using UnityEngine;
 
 public class SetColliders : MonoBehaviour
 {
-    [Range(0f, .1f)]
+    [Range(0f, 10f)]
     public float amplitude = 1f;
-    [Range(0f, 1f)]
-    public float offset;
     private Transform[] children;
-
-    protected void Start()
-    {
-        Initialise();
-        SetAngles();
-    }
 
     protected void OnValidate()
     {
@@ -35,17 +27,17 @@ public class SetColliders : MonoBehaviour
     protected void SetAngles()
     {
         float angle = 360f / children.Length;
+        float currentAngle = 0f;
 
         for (int i = 0; i < children.Length; i++)
         {
-            float x = amplitude * Mathf.Cos(angle) * Mathf.Rad2Deg;
-            float z = amplitude * Mathf.Sin(angle) * Mathf.Rad2Deg;
+            float x = amplitude * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
+            float z = amplitude * Mathf.Sin(currentAngle * Mathf.Deg2Rad);
 
-            children[i].transform.position = new Vector3(x, children[i].transform.position.y, z);
+            children[i].transform.position = transform.position + new Vector3(x, transform.localPosition.y, z);
 
             children[i].LookAt(transform);
-
-            angle += offset;
+            currentAngle += angle;
         }
     }
 }

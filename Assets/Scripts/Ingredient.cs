@@ -100,7 +100,9 @@ public class Ingredient : MonoBehaviour
     private IEnumerator PlaySFX()
     {
         float timeStart = Time.time;
-        float startVolume = playOnce == true ? 0.5f : 1f;
+        //float startVolume = playOnce == true ? 0.5f : 1f;
+        float startVolume = ConnectedCookingDevice.Count > 0 ? ExtensionMethods.Remap(ConnectedCookingDevice[0].heatingPower, 0f, 5f, 0f, .8f) 
+            + (ConnectedCookingDevice[0].heatingPower > 0.1 ? .2f : 0f) : 0.8f;
         float endVolume = 0f;
         float percentageComplete = 0f;
 

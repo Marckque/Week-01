@@ -5,6 +5,7 @@ using UnityEngine;
 public class MouseFollower : MonoBehaviour
 {
     public float smooth;
+    public float maxSpeed;
     private Vector3 velocity = Vector3.zero;
 
     protected void Start()
