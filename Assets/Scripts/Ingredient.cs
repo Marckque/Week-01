@@ -7,8 +7,7 @@ public class Ingredient : MonoBehaviour
 {
     [Header("Ingredient")]
     [Header("VFX")]
-    public ParticleSystem destroyedVFX;
-    public ParticleSystem cookingVFX;
+    public ParticleSystem ateVFX;
 
     [Header("Audio")]
     public AudioSource sourceStartCookingSFX;
@@ -58,7 +57,7 @@ public class Ingredient : MonoBehaviour
 
     public void EatIngredient()
     {
-        ParticleSystem ps = Instantiate(destroyedVFX, transform.position, Quaternion.identity);
+        ParticleSystem ps = Instantiate(ateVFX, transform.position, Quaternion.identity);
         Destroy(ps, 1f);
 
         Destroy(gameObject);
@@ -76,50 +75,10 @@ public class Ingredient : MonoBehaviour
                 connectedCookingDevice.Add(cookingDevice);
             }
 
-            // !!!!!!!!!!!! A REPARER !!!!!!!!!!
-            // !!!!!!!!!!!! A REPARER !!!!!!!!!!
-            // !!!!!!!!!!!! A REPARER !!!!!!!!!!
-            // !!!!!!!!!!!! A REPARER !!!!!!!!!!
-            // !!!!!!!!!!!! A REPARER !!!!!!!!!!
-
-            // Trigger enter sound 
-            //if (cookingDevice.sourceStartCookingSFX)
+            if ((!sourceStartCookingSFX.isPlaying && timeWithoutConnectedDevice > .8f) || playOnce)
             {
-                //if (sourceStartCookingSFX.clip != cookingDevice.sourceStartCookingSFX)
-                //{
-                //    sourceStartCookingSFX.clip = cookingDevice.sourceStartCookingSFX;
-                //}
-
-                if ((!sourceStartCookingSFX.isPlaying && timeWithoutConnectedDevice > .8f) || playOnce)
-                {
-                    playOnce = false;
-                    StartCoroutine(PlaySFX());
-                }
-            }
-
-            // Trigger enter fx
-            if (cookingDevice.cookingVFX)
-            {
-                if (cookingVFX != cookingDevice.cookingVFX)
-                {
-                    cookingVFX = cookingDevice.cookingVFX;
-                }
-                
-                if (!cookingVFX.isPlaying)
-                {
-                    /*
-                    ParticleSystem ps = Instantiate(cookingVFX, transform.position, Quaternion.identity);
-
-                    ps.transform.localEulerAngles = Vector3.zero;
-                    ps.transform.position = Vector3.zero;
-                    */
-
-                    //float y = other.ClosestPoint(transform.position).y + 0.05f;
-
-                    //cookingVFX.transform.position = new Vector3(transform.position.x, y, transform.position.z);
-                    //cookingVFX.Play();
-                    //cookingVFX.Emit(0);
-                }
+                playOnce = false;
+                StartCoroutine(PlaySFX());
             }
         }
     }
@@ -134,12 +93,6 @@ public class Ingredient : MonoBehaviour
             if (connectedCookingDevice.Contains(cookingDevice))
             {
                 connectedCookingDevice.Remove(cookingDevice);
-            }
-
-            if (cookingVFX.isPlaying)
-            {
-                cookingVFX.Stop();
-                cookingVFX.Pause();
             }
         }
     }
@@ -164,5 +117,6 @@ public class Ingredient : MonoBehaviour
     protected void OnDestroy()
     {
         IngredientManager.Instance.RemoveIngredient(this);
+        IngredientManager.Instance.RemoveDyingIngredient(this);
     }
 }

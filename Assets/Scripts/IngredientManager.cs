@@ -9,6 +9,8 @@ public class IngredientManager : MonoBehaviour
 
     public CookingDevice currentCookingDevice;
     private List<Ingredient> ingredients = new List<Ingredient>();
+    private List<Ingredient> dyingIngredients = new List<Ingredient>();
+    public List<Ingredient> DyingIngredients { get { return dyingIngredients; } }
 
     protected void Start()
     {
@@ -45,6 +47,22 @@ public class IngredientManager : MonoBehaviour
         if (ingredients.Contains(ingredient))
         {
             ingredients.Remove(ingredient);
+        }
+    }
+
+    public void AddDyingIngredient(Ingredient ingredient)
+    {
+        if (!dyingIngredients.Contains(ingredient))
+        {
+            dyingIngredients.Add(ingredient);
+        }
+    }
+
+    public void RemoveDyingIngredient(Ingredient ingredient)
+    {
+        if (dyingIngredients.Contains(ingredient))
+        {
+            dyingIngredients.Remove(ingredient);
         }
     }
 
