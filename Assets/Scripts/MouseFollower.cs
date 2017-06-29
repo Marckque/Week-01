@@ -15,6 +15,6 @@ public class MouseFollower : MonoBehaviour
 
     protected void Update()
     {
-        transform.position = Vector3.SmoothDamp(transform.position, Input.mousePosition, ref velocity, smooth);
+        transform.position = Vector3.SmoothDamp(transform.position, Input.mousePosition, ref velocity, smooth, maxSpeed);
     }
 }
