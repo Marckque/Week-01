@@ -33,6 +33,7 @@ public class Ingredient : MonoBehaviour
 
     protected virtual void Update()
     {
+        /*
         if (ConnectedCookingDevice.Count > 0)
         {
             if (!sourceCookingSFX.isPlaying)
@@ -40,6 +41,7 @@ public class Ingredient : MonoBehaviour
                 sourceCookingSFX.Play();
             }
         }
+        */
     }
 
     public void ChangeToNewParent(bool value)
@@ -128,8 +130,8 @@ public class Ingredient : MonoBehaviour
                     //float y = other.ClosestPoint(transform.position).y + 0.05f;
 
                     //cookingVFX.transform.position = new Vector3(transform.position.x, y, transform.position.z);
-                    cookingVFX.Play();
-                    cookingVFX.Emit(0);
+                    //cookingVFX.Play();
+                    //cookingVFX.Emit(0);
                 }
             }
         }
