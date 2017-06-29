@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ public class PanController : CookingDevice
     private Pan[] pans;
 
     // UI
-    public Text temperature;
+    public TextMeshProUGUI temperature;
 
     // Heating power change
     private float lastTransition;
@@ -130,7 +131,9 @@ public class PanController : CookingDevice
 
         // Update UI
         int newTemperature = Mathf.RoundToInt(ExtensionMethods.Remap(heatingPower, 0f, 5f, 0f, 220f));
-        temperature.text = newTemperature.ToString() + "°C";
+        temperature.text = newTemperature.ToString() + "°";
+        //temperature.text = newTemperature.ToString() + "°C";
+
 
         // Prevents unexpected rigidbodies' behaviours
         //if (preventIngredientsToBug)
