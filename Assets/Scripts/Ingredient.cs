@@ -93,7 +93,6 @@ public class Ingredient : MonoBehaviour
                 if ((!sourceStartCookingSFX.isPlaying && timeWithoutConnectedDevice > .8f) || playOnce)
                 {
                     playOnce = false;
-
                     StartCoroutine(PlaySFX());
                 }
             }
@@ -148,7 +147,7 @@ public class Ingredient : MonoBehaviour
     private IEnumerator PlaySFX()
     {
         float timeStart = Time.time;
-        float startVolume = playOnce == true ? 1f : 0.5f;
+        float startVolume = playOnce == true ? 0.5f : 1f;
         float endVolume = 0f;
         float percentageComplete = 0f;
 
