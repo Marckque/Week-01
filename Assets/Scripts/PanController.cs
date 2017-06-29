@@ -122,7 +122,7 @@ public class PanController : CookingDevice
         }
 
         // Update heat button visuals
-        Vector3 newEulerAngles = new Vector3(ExtensionMethods.Remap(heatingPower, 0f, 5f, 0f, 360f), 0f, 270f);
+        Vector3 newEulerAngles = new Vector3(ExtensionMethods.Remap(heatingPower, 0f, 5f, 0f, 270f), 0f, 270f);
         heatButton.transform.eulerAngles = newEulerAngles;
 
         // Stop the power
