@@ -28,10 +28,8 @@ public class Gamba : Ingredient
         randomCookingOffset = Random.Range(0.9f, 1.1f);
 	}
 
-    protected override void Update()
+    protected void Update()
     {
-        base.Update();
-
         if (connectedCookingDevice.Count > 0)
         {
             cookingValue += ((connectedCookingDevice[0].heatingPower * Time.deltaTime * 0.01f) * randomCookingOffset);

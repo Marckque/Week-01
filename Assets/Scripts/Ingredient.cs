@@ -31,19 +31,6 @@ public class Ingredient : MonoBehaviour
         endPosition = new Vector3(0f, 3f, -15f);
     }
 
-    protected virtual void Update()
-    {
-        /*
-        if (ConnectedCookingDevice.Count > 0)
-        {
-            if (!sourceCookingSFX.isPlaying)
-            {
-                sourceCookingSFX.Play();
-            }
-        }
-        */
-    }
-
     public void ChangeToNewParent(bool value)
     {
         if (value)
@@ -106,7 +93,8 @@ public class Ingredient : MonoBehaviour
                 if ((!sourceStartCookingSFX.isPlaying && timeWithoutConnectedDevice > .8f) || playOnce)
                 {
                     playOnce = false;
-                    sourceStartCookingSFX.Play();
+
+                    StartCoroutine(PlaySFX());
                 }
             }
 
@@ -154,6 +142,23 @@ public class Ingredient : MonoBehaviour
                 cookingVFX.Stop();
                 cookingVFX.Pause();
             }
+        }
+    }
+
+    private IEnumerator PlaySFX()
+    {
+        float timeStart = Time.time;
+        float startVolume = playOnce == true ? 1f : 0.5f;
+        float endVolume = 0f;
+        float percentageComplete = 0f;
+
+        sourceStartCookingSFX.Play();
+
+        while (percentageComplete < 1f)
+        {
+            percentageComplete = (Time.time - timeStart) / sourceStartCookingSFX.clip.length;
+            sourceStartCookingSFX.volume = Mathf.Lerp(startVolume, endVolume, percentageComplete);
+            yield return new WaitForEndOfFrame();
         }
     }
 
