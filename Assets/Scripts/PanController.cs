@@ -11,6 +11,7 @@ public class PanController : CookingDevice
 
     // Pan
     public Transform pansRoot;
+    public Transform heatButton;
     private Pan[] pans;
 
     // UI
@@ -71,19 +72,6 @@ public class PanController : CookingDevice
         {
             AddIngredientSecurity();
         }
-        
-        /* Other debug mesure
-        if (Time.time > lastRecordedTime + securityFrames)
-        {
-            lastRecordedTime = Time.time;
-            formerMousePosition = Input.mousePosition;
-        }
-
-        if (Vector3.Distance(currentMousePosition, formerMousePosition) > mouseDistance)
-        {
-            AddIngredientSecurity();
-        }
-        */
 
         // Use pan
         if (isBeingUsed)
@@ -115,8 +103,12 @@ public class PanController : CookingDevice
             targetHeatingPower = Mathf.Clamp(targetHeatingPower, heatingPower - 0.5f, heatingPower + 0.5f);
 
             StartCoroutine(UpdateHeat());
-        }   
-        
+        }
+
+        // Update heat button visuals
+        Vector3 newEulerAngles = new Vector3(ExtensionMethods.Remap(heatingPower, 0f, 5f, 0f, 360f), 0f, 270f);
+        heatButton.transform.eulerAngles = newEulerAngles;
+
         // Stop the power
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -125,21 +117,15 @@ public class PanController : CookingDevice
 
         if (Input.GetKeyDown(KeyCode.E) && Mathf.Approximately(heatingPower, 0f))
         {
-            Debug.Log("E");
             IngredientManager.Instance.Eat();
         }
 
         // Update UI
         int newTemperature = Mathf.RoundToInt(ExtensionMethods.Remap(heatingPower, 0f, 5f, 0f, 220f));
         temperature.text = newTemperature.ToString() + "°";
-        //temperature.text = newTemperature.ToString() + "°C";
-
 
         // Prevents unexpected rigidbodies' behaviours
-        //if (preventIngredientsToBug)
-        {
-            RemoveIngredientSecurity();
-        }
+        RemoveIngredientSecurity();
     }
 
     private void AddIngredientSecurity()

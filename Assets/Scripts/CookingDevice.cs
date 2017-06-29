@@ -9,9 +9,7 @@ public class CookingDevice : MonoBehaviour
     protected float targetHeatingPower;
 
     [Header("Feedback")]
-    public ParticleSystem cookingVFX;
     public AudioSource cookingAudioSource;
-    //public AudioClip sourceStartCookingSFX;
 
     protected bool isBeingUsed;
 }
