@@ -30,7 +30,7 @@ public class ParticleHeat : MonoBehaviour
             for (int i = 0; i < particleSystems.Length; i++)
             {
                 var em = particleSystems[i].emission;
-                em.rateOverTime = ExtensionMethods.Remap(panController.heatingPower, 0f, 5f, 0f, 40f);
+                em.rateOverTime = i == 0 ? ExtensionMethods.Remap(panController.heatingPower, 0f, 5f, 0f, 40f) : ExtensionMethods.Remap(panController.heatingPower, 0f, 5f, 0f, 200f);
 
                 if (!particleSystems[i].isPlaying)
                 {
@@ -41,7 +41,7 @@ public class ParticleHeat : MonoBehaviour
             // SFX
             for (int i = 0; i < audioSources.Length; i++)
             {
-                audioSources[i].volume = ExtensionMethods.Remap(panController.heatingPower, 0f, 5f, 0f, 0.5f);
+                audioSources[i].volume = ExtensionMethods.Remap(panController.heatingPower, 0f, 5f, 0f, 0.4f);
 
                 if (!audioSources[i].isPlaying)
                 {
