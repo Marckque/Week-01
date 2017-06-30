@@ -10,6 +10,7 @@ public class CookingDevice : MonoBehaviour
 
     [Header("Feedback")]
     public AudioSource cookingAudioSource;
+    public AudioSource startCookingAudioSource;
 
     protected bool isBeingUsed;
 }

@@ -75,7 +75,7 @@ public class Ingredient : MonoBehaviour
                 connectedCookingDevice.Add(cookingDevice);
             }
 
-            if ((!sourceStartCookingSFX.isPlaying && timeWithoutConnectedDevice > .8f) || playOnce)
+            if ((!sourceStartCookingSFX.isPlaying && timeWithoutConnectedDevice > 1f) || playOnce)
             {
                 playOnce = false;
                 StartCoroutine(PlaySFX());
@@ -99,19 +99,25 @@ public class Ingredient : MonoBehaviour
 
     private IEnumerator PlaySFX()
     {
-        float timeStart = Time.time;
-        //float startVolume = playOnce == true ? 0.5f : 1f;
-        float startVolume = ConnectedCookingDevice.Count > 0 ? ExtensionMethods.Remap(ConnectedCookingDevice[0].heatingPower, 0f, 5f, 0.05f, 0.6f) : 0f;
-        float endVolume = 0f;
-        float percentageComplete = 0f;
-
-        sourceStartCookingSFX.Play();
-
-        while (percentageComplete < 1f)
+        if (IngredientManager.Instance.currentCookingDevice.startCookingAudioSource.isPlaying)
         {
-            percentageComplete = (Time.time - timeStart) / sourceStartCookingSFX.clip.length;
-            sourceStartCookingSFX.volume = Mathf.Lerp(startVolume, endVolume, percentageComplete);
-            yield return new WaitForEndOfFrame();
+            yield break;
+        }
+        else
+        {
+            float timeStart = Time.time;
+            float startVolume = ConnectedCookingDevice.Count > 0 ? ExtensionMethods.Remap(ConnectedCookingDevice[0].heatingPower, 0f, 5f, 0.1f, 0.7f) : 0f;
+            float endVolume = 0f;
+            float percentageComplete = 0f;
+
+            IngredientManager.Instance.currentCookingDevice.startCookingAudioSource.Play();
+
+            while (percentageComplete < 1f)
+            {
+                percentageComplete = (Time.time - timeStart) / sourceStartCookingSFX.clip.length;
+                IngredientManager.Instance.currentCookingDevice.startCookingAudioSource.volume = Mathf.Lerp(startVolume, endVolume, percentageComplete);
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
 
