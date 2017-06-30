@@ -58,7 +58,7 @@ public class PanController : CookingDevice
     #endregion Variables
 
     private void Start()
-    {
+    {        
         SetAllPansParts();
         targetHeatingPower = heatingPower;
         originalPosition = transform.position;
