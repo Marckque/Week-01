@@ -15,7 +15,6 @@ public class Gamba : Ingredient
     private bool isAttractedToPan = true;
     private MeshRenderer meshRenderer;
 
-
     private float randomCookingOffset;
 
 	protected override void Start()
