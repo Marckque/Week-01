@@ -16,6 +16,8 @@ public class Condiment : MonoBehaviour
 
     public float rotationSpeed;
 
+    private bool hasCooldown = true;
+
     private bool saltUsed;
     private bool pepperUsed;
 
@@ -30,37 +32,51 @@ public class Condiment : MonoBehaviour
         if (isSalt)
         {
             moveToTarget = Input.GetKey(KeyCode.S);
+
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                StartCoroutine(StartCooldown());
+            }
         }
         else
         {
             moveToTarget = Input.GetKey(KeyCode.P);
+
+            if (Input.GetKeyUp(KeyCode.P))
+            {
+                StartCoroutine(StartCooldown());
+            }
         }
 
-        if (otherCondiment.moveToTarget) moveToTarget = false;
+        if (otherCondiment.moveToTarget || !hasCooldown) moveToTarget = false;
 
         if (moveToTarget)
         {
-            if (!condimentParticle.isPlaying)
             {
-                condimentParticle.Emit(0);
                 condimentParticle.Play();
             }
 
             Vector3 vel = Vector3.zero;
             transform.position = Vector3.SmoothDamp(transform.position, target.position, ref vel, 0.1f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.down), Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.down), Time.deltaTime * rotationSpeed);
         }
         else
         {
             if (condimentParticle.isPlaying)
             {
-                condimentParticle.Pause();
                 condimentParticle.Stop();
             }
 
             Vector3 vel = Vector3.zero;
             transform.position = Vector3.SmoothDamp(transform.position, originalPosition, ref vel, 0.1f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.up), Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.up), Time.deltaTime * rotationSpeed);
         }
+    }
+
+    private IEnumerator StartCooldown()
+    {
+        hasCooldown = false;
+        yield return new WaitForSeconds(.25f);
+        hasCooldown = true;
     }
 }
