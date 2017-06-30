@@ -16,11 +16,6 @@ public class Condiment : MonoBehaviour
 
     public float rotationSpeed;
 
-    private bool hasCooldown = true;
-
-    private bool saltUsed;
-    private bool pepperUsed;
-
     private void Start()
     {
         originalPosition = transform.position;
@@ -32,23 +27,13 @@ public class Condiment : MonoBehaviour
         if (isSalt)
         {
             moveToTarget = Input.GetKey(KeyCode.S);
-
-            if (Input.GetKeyUp(KeyCode.S))
-            {
-                StartCoroutine(StartCooldown());
-            }
         }
         else
         {
             moveToTarget = Input.GetKey(KeyCode.P);
-
-            if (Input.GetKeyUp(KeyCode.P))
-            {
-                StartCoroutine(StartCooldown());
-            }
         }
 
-        if (otherCondiment.moveToTarget || !hasCooldown) moveToTarget = false;
+        if (otherCondiment.moveToTarget) moveToTarget = false;
 
         if (moveToTarget)
         {
@@ -72,12 +57,5 @@ public class Condiment : MonoBehaviour
             transform.position = Vector3.SmoothDamp(transform.position, originalPosition, ref vel, 0.1f);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.up), Time.deltaTime * rotationSpeed);
         }
-    }
-
-    private IEnumerator StartCooldown()
-    {
-        hasCooldown = false;
-        yield return new WaitForSeconds(.25f);
-        hasCooldown = true;
     }
 }
