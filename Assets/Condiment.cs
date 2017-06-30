@@ -37,9 +37,7 @@ public class Condiment : MonoBehaviour
 
         if (moveToTarget)
         {
-            //condimentParticle.gameObject.SetActive(true);
-
-            condimentParticle.Play();
+            condimentParticle.Emit(1);
 
             Vector3 vel = Vector3.zero;
             transform.position = Vector3.SmoothDamp(transform.position, target.position, ref vel, 0.1f);
@@ -47,12 +45,6 @@ public class Condiment : MonoBehaviour
         }
         else
         {
-            //condimentParticle.gameObject.SetActive(false);
-            if (condimentParticle.isPlaying)
-            {
-                condimentParticle.Stop();
-            }
-
             Vector3 vel = Vector3.zero;
             transform.position = Vector3.SmoothDamp(transform.position, originalPosition, ref vel, 0.1f);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.up), Time.deltaTime * rotationSpeed);
