@@ -52,9 +52,9 @@ public class Condiment : MonoBehaviour
 
         if (moveToTarget)
         {
-            {
-                condimentParticle.Play();
-            }
+            //condimentParticle.gameObject.SetActive(true);
+
+            condimentParticle.Play();
 
             Vector3 vel = Vector3.zero;
             transform.position = Vector3.SmoothDamp(transform.position, target.position, ref vel, 0.1f);
@@ -62,6 +62,7 @@ public class Condiment : MonoBehaviour
         }
         else
         {
+            //condimentParticle.gameObject.SetActive(false);
             if (condimentParticle.isPlaying)
             {
                 condimentParticle.Stop();
