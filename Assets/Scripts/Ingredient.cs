@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class Ingredient : MonoBehaviour
 {
     [Header("Ingredient")]
+    public float maximumVelocity;
+
     [Header("VFX")]
     public ParticleSystem ateVFX;
 
@@ -93,6 +95,19 @@ public class Ingredient : MonoBehaviour
             if (connectedCookingDevice.Contains(cookingDevice))
             {
                 connectedCookingDevice.Remove(cookingDevice);
+
+                if (entityRigidbody.velocity.magnitude >= maximumVelocity - 0.5f)
+                {
+                    IngredientManager ingredientManager = IngredientManager.Instance;
+
+                    if (Time.time > ingredientManager.TimeBetweenEachSqueezes + ingredientManager.TimeLastSqueeze)
+                    {
+                        ingredientManager.TimeBetweenEachSqueezes = Random.Range(15f, 30f);
+
+                        ingredientManager.TimeLastSqueeze = Time.time;
+                        ingredientManager.PlaySqueeze();
+                    }
+                }
             }
         }
     }
@@ -116,7 +131,7 @@ public class Ingredient : MonoBehaviour
                 }
                 else
                 {
-                    startVolume = ExtensionMethods.Remap(ConnectedCookingDevice[0].heatingPower, 0f, 5f, 0.1f, 0.7f);
+                    startVolume = ExtensionMethods.Remap(ConnectedCookingDevice[0].heatingPower, 0f, 5f, 0.02f, 0.5f);
                 }
             }
             else

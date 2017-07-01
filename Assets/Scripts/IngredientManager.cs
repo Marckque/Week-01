@@ -12,9 +12,18 @@ public class IngredientManager : MonoBehaviour
     private List<Ingredient> dyingIngredients = new List<Ingredient>();
     public List<Ingredient> DyingIngredients { get { return dyingIngredients; } }
 
+    public AudioSource squeezeAudioSource;
+    public AudioClip[] squeezeClips;
+
+    public float TimeLastSqueeze { get; set; }
+    public float TimeBetweenEachSqueezes { get; set; }
+    public bool FirstSqueeze { get; set; }
+
+
     protected void Start()
     {
         InitialiseIngredientManager();
+        TimeBetweenEachSqueezes = 5f;
     }
 
     private void InitialiseIngredientManager()
@@ -87,6 +96,35 @@ public class IngredientManager : MonoBehaviour
         if (ingredients.Count > 0)
         {
             ingredients[0].EatIngredient();
+        }
+    }
+
+    public void PlaySqueeze()
+    {
+        if (!squeezeAudioSource.isPlaying)
+        {
+            StartCoroutine(PlaySFX());
+        }
+    }
+
+    private IEnumerator PlaySFX()
+    {
+        float timeStart = Time.time;
+        float startVolume = 0.7f;
+        float endVolume = 0f;
+        float percentageComplete = 0f;
+
+        int randomClip = Random.Range(0, squeezeClips.Length);
+        squeezeAudioSource.clip = squeezeClips[randomClip];
+
+        squeezeAudioSource.pitch = 1f + Random.Range(-0.05f, 0.05f);
+        squeezeAudioSource.Play();
+
+        while (percentageComplete < 1f)
+        {
+            percentageComplete = (Time.time - timeStart) / 1f;
+            squeezeAudioSource.volume = Mathf.Lerp(startVolume, endVolume, percentageComplete);
+            yield return new WaitForEndOfFrame();
         }
     }
 }

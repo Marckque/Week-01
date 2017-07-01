@@ -7,7 +7,6 @@ public class Gamba : Ingredient
     [Header("Gamba")]
     [Header("Velocity")]
     public float velocityMagnitude;
-    public float maximumVelocity;
 
     public float delayBeforeDeactivation = 1f;
     private float delayElapsed;
