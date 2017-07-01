@@ -110,7 +110,7 @@ public class IngredientManager : MonoBehaviour
     private IEnumerator PlaySFX()
     {
         float timeStart = Time.time;
-        float startVolume = 0.7f;
+        float startVolume = 0.6f;
         float endVolume = 0f;
         float percentageComplete = 0f;
 
