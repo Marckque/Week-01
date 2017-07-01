@@ -75,7 +75,7 @@ public class Ingredient : MonoBehaviour
                 connectedCookingDevice.Add(cookingDevice);
             }
 
-            if ((!sourceStartCookingSFX.isPlaying && timeWithoutConnectedDevice > 1f) || playOnce)
+            if ((!IngredientManager.Instance.currentCookingDevice.startCookingAudioSource.isPlaying && timeWithoutConnectedDevice > 1f) || playOnce)
             {
                 playOnce = false;
                 StartCoroutine(PlaySFX());
@@ -106,7 +106,24 @@ public class Ingredient : MonoBehaviour
         else
         {
             float timeStart = Time.time;
-            float startVolume = ConnectedCookingDevice.Count > 0 ? ExtensionMethods.Remap(ConnectedCookingDevice[0].heatingPower, 0f, 5f, 0.1f, 0.7f) : 0f;
+            float startVolume = 0f;
+
+            if (ConnectedCookingDevice.Count > 0)
+            {
+                if (ConnectedCookingDevice[0].heatingPower <= 0.1f)
+                {
+                    startVolume = 0.02f;
+                }
+                else
+                {
+                    startVolume = ExtensionMethods.Remap(ConnectedCookingDevice[0].heatingPower, 0f, 5f, 0.1f, 0.7f);
+                }
+            }
+            else
+            {
+                startVolume = 0f;
+            }
+            
             float endVolume = 0f;
             float percentageComplete = 0f;
 

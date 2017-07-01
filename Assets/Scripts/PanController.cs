@@ -128,7 +128,8 @@ public class PanController : CookingDevice
         // Stop the power
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            heatingPower = 0f;
+            targetHeatingPower = 0f;
+            StartCoroutine(UpdateHeat());
         }
 
         if (Input.GetKeyDown(KeyCode.E) && Mathf.Approximately(heatingPower, 0f))

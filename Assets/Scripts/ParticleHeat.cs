@@ -7,6 +7,7 @@ public class ParticleHeat : MonoBehaviour
     public PanController panController;
     public ParticleSystem[] particleSystems;
     public AudioSource[] audioSources;
+    public bool soundCoroutineIsWorking;
 
     protected void Update()
     {
@@ -18,14 +19,16 @@ public class ParticleHeat : MonoBehaviour
                 particleSystems[i].Stop();
             }
 
-            // SFX
-            for (int i = 0; i < audioSources.Length; i++)
+            if (!soundCoroutineIsWorking)
             {
-                audioSources[i].Stop();
+                soundCoroutineIsWorking = true;
+                StartCoroutine(StopSounds());
             }
         }
         else
         {
+            soundCoroutineIsWorking = false;
+
             // VFX
             for (int i = 0; i < particleSystems.Length; i++)
             {
@@ -50,4 +53,21 @@ public class ParticleHeat : MonoBehaviour
             }
         }
 	}
+
+    private IEnumerator StopSounds()
+    {
+        float timeStart = Time.time;
+        float startVolume = audioSources[0].volume;
+        float endVolume = 0f;
+        float percentageComplete = 0f;
+
+        while (percentageComplete < 1f && soundCoroutineIsWorking)
+        {
+            percentageComplete = (Time.time - timeStart) / 1.5f;
+            audioSources[0].volume = Mathf.Lerp(startVolume, endVolume, percentageComplete);
+            yield return new WaitForEndOfFrame();
+        }
+
+        soundCoroutineIsWorking = false;
+    }
 }
